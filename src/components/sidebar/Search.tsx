@@ -6,11 +6,14 @@ import SearchIcon from './SearchIcon'
 import { GeoData } from '@/types'
 import { getSearchOptions } from '@/lib'
 import SearchedCity from './SearchedCity'
+import { useMutation } from 'react-query'
 
 const Search = () => {
   const setIsOpenSearch = useWeatherStore((state) => state.setIsOpenSearch)
   const [searchValue, setSearchValue] = useState<string>('')
   const [options, setOptions] = useState<GeoData[]>([])
+
+  const searchOptionsMutation = useMutation(getSearchOptions)
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim()
@@ -21,8 +24,8 @@ const Search = () => {
       return
     }
 
-    const searchedOptions = await getSearchOptions(value)
-    setOptions(searchedOptions)
+    const searchOptions = await searchOptionsMutation.mutateAsync(value)
+    setOptions(searchOptions)
   }
 
   return (
@@ -55,6 +58,3 @@ const Search = () => {
 }
 
 export default Search
-{
-  /* <SearchedCity key={city.id} city={city} /> */
-}
