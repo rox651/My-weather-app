@@ -11,7 +11,7 @@ export const getLocationWeather = async ({ lat, lon }: { lat: number; lon: numbe
 }
 
 const geoInstance = axios.create({
-  baseURL: 'http://api.openweathermap.org/geo/1.0/',
+  baseURL: 'https://api.openweathermap.org/geo/1.0/',
 })
 
 export const getSearchOptions = async (value: string): Promise<GeoData[]> => {
