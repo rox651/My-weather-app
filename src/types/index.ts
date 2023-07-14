@@ -1,3 +1,3 @@
-export * from './cities'
+export * from './geo'
 export * from './weather'
 export * from './store'

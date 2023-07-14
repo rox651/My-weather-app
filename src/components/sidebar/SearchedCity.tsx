@@ -1,15 +1,15 @@
 import { FC } from 'react'
-import { City } from '@/types'
 import { useWeatherStore } from '@/store'
+import { GeoData } from '@/types'
 
 type SearchedCityProps = {
-  city: City
+  option: GeoData
 }
 
-const SearchedCity: FC<SearchedCityProps> = ({ city }) => {
+const SearchedCity: FC<SearchedCityProps> = ({ option }) => {
   const setLocation = useWeatherStore((state) => state.setLocation)
   const setIsOpenSearch = useWeatherStore((state) => state.setIsOpenSearch)
-  const { lat, lon } = city.coord
+  const { lat, lon } = option
 
   const onClickCity = () => {
     setLocation({ lat, lon })
@@ -18,7 +18,7 @@ const SearchedCity: FC<SearchedCityProps> = ({ city }) => {
 
   return (
     <li className="border cursor-pointer border-[#616475] px-5 py-4 text-base w-full text-start" onClick={onClickCity}>
-      {city.name} - {city.country}
+      {option.name} - {option.country}
     </li>
   )
 }

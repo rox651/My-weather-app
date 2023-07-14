@@ -1,33 +1,28 @@
 import { useState } from 'react'
-import { City } from '@/types'
-import cities from '@/utils/city.list.json'
-import SearchedCity from './SearchedCity'
 import { useWeatherStore } from '@/store'
 
 import SearchXmarkIcon from './SearchXmarkIcon'
 import SearchIcon from './SearchIcon'
+import { GeoData } from '@/types'
+import { getSearchOptions } from '@/lib'
+import SearchedCity from './SearchedCity'
 
 const Search = () => {
   const setIsOpenSearch = useWeatherStore((state) => state.setIsOpenSearch)
-  const [searchCities, setSearchCities] = useState<City[]>()
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [options, setOptions] = useState<GeoData[]>([])
 
-  const allCities = cities as City[]
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim().toLowerCase()
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim()
+    setSearchValue(value)
 
     if (!value) {
-      setSearchCities([])
+      setOptions([])
       return
     }
 
-    const filteredCities = allCities
-      .filter((city) => {
-        return city.name?.toLowerCase().startsWith(value)
-      })
-      .splice(0, 10)
-
-    setSearchCities(filteredCities)
+    const searchedOptions = await getSearchOptions(value)
+    setOptions(searchedOptions)
   }
 
   return (
@@ -43,6 +38,7 @@ const Search = () => {
       <fieldset className="border border-[#E7E7EB]  relative   ">
         <SearchIcon />
         <input
+          value={searchValue}
           onChange={handleInputChange}
           type="text"
           placeholder="Search location"
@@ -50,10 +46,15 @@ const Search = () => {
         />
       </fieldset>
       <ul className="mt-10 space-y-4">
-        {searchCities?.length === 0 ? <li>No countries/cities found yet</li> : searchCities?.map((city) => <SearchedCity key={city.id} city={city} />)}
+        {options.map((option, index) => (
+          <SearchedCity key={index} option={option} />
+        ))}
       </ul>
     </div>
   )
 }
 
 export default Search
+{
+  /* <SearchedCity key={city.id} city={city} /> */
+}

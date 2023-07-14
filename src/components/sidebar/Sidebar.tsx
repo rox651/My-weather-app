@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { useWeatherStore } from '@/store'
 import TodayStatistic from './TodayStatistic'
+import Search from './Search'
 
 const Sidebar = () => {
   const isOpenSearch = useWeatherStore((state) => state.isOpenSearch)
@@ -12,7 +13,7 @@ const Sidebar = () => {
         !isOpenSearch && 'items-center'
       )}
     >
-      <TodayStatistic />
+      {!isOpenSearch ? <TodayStatistic /> : <Search />}
     </section>
   )
 }
