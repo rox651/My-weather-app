@@ -16,7 +16,7 @@ const Search = () => {
   const searchOptionsMutation = useMutation(getSearchOptions)
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim()
+    const { value } = e.target
     setSearchValue(value)
 
     if (!value) {
@@ -24,7 +24,7 @@ const Search = () => {
       return
     }
 
-    const searchOptions = await searchOptionsMutation.mutateAsync(value)
+    const searchOptions = await searchOptionsMutation.mutateAsync(value.trim())
     setOptions(searchOptions)
   }
 
